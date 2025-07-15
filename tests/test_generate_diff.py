@@ -28,8 +28,8 @@ cases = [
     (json_flat1, yaml_flat2, 'test_flat.txt', 'stylish'),
     (json_nested1, json_nested2, 'test_nested.txt', 'stylish'),
     (yaml_nested1, yaml_nested2, 'test_nested.txt', 'stylish'),
-    # (json_nested1, json_nested2, 'test_plain.txt', 'plain'),
-    # (json_nested1, json_nested2, 'test_json.txt', 'json'),
+    (json_nested1, json_nested2, 'test_plain.txt', 'plain'),
+    (json_nested1, json_nested2, 'test_json.txt', 'json'),
 ]
 
 

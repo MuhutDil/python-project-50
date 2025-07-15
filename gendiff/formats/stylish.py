@@ -17,7 +17,7 @@ def add_prefix(content, depth, symb=''):
     return f"{depth_indent}{symb}{content}"
 
 
-def rename_value(value):
+def to_original_value(value):
     '''
     Rename bool value to their original representation.
     '''
@@ -39,7 +39,7 @@ def format(data, depth=0):
         A string representation of the formatted nested dictionary.
     '''
     if not isinstance(data, dict):
-        return f'{rename_value(data)}'
+        return f'{to_original_value(data)}'
     current_indent = INDENT * 4 * depth
     current_depth = depth + 1
     lines = []
@@ -49,12 +49,12 @@ def format(data, depth=0):
                          f'{format(descrip, current_depth)}')
             continue
         value = descrip.get('value')
-        type = descrip.get('type')
-        if type in TYPES:
-            prefix = TYPES[type]
+        type_content = descrip.get('type')
+        if type_content in TYPES:
+            prefix = TYPES[type_content]
             lines.append(f'{add_prefix(key, current_depth, prefix)}: '
                          f'{format(value, current_depth)}')
-        elif type == 'changed':
+        elif type_content == 'changed':
             old_value = value.get('old_value')
             new_value = value.get('new_value')
             lines.append(f'{add_prefix(key, current_depth, symb="- ")}: '
