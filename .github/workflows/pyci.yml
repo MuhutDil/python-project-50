@@ -31,5 +31,5 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=MuhutDil_python-project-50
-            -Dsonar.organization=MuhutDil
+            -Dsonar.organization=muhutdil
             -Dsonar.python.coverage.reportPaths=coverage.xml
