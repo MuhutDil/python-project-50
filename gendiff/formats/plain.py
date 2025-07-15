@@ -12,61 +12,56 @@ def rename_value(value):
     return correct_view[value]
 
 
-def differents(value, type):
+def differents(value, type_content):
     '''
-    Return a string based on the given type and value,
-    using the rename_value
-    function to format the output.
+    Return a string based on the given type and value.
     '''
-    if type == 'added':
+    if type_content == 'added':
         return f'added with value: {rename_value(value)}'
-    elif type == 'deleted':
+    elif type_content == 'deleted':
         return 'removed'
-    elif type == 'changed':
+    elif type_content == 'changed':
         old_value = value.get('old_value')
         new_value = value.get('new_value')
         return (f'updated. From {rename_value(old_value)}'
                 + f' to {rename_value(new_value)}')
-    else:
-        return
+    raise ValueError('Invalid type.')
 
 
-def properties(dif, parent=''):
+def properties(diff, parent=''):
     '''
     Generate a list of properties and their differences.
 
     Args:
-        dif: A dictionary representing the input differences.
+        diff: A dictionary representing the input differences.
         parent: A string representing of the full path to the root
                 (default is an empty string).
 
     Returns:
         A list of tuples containing the property name and its differences.
     '''
+    TYPES = ('added', 'deleted', 'changed')
     lines = []
-    types = {'added',
-             'deleted',
-             'changed'
-             }
-    for name, descrip in dif.items():
-        type = descrip.get('type')
+    for name, descrip in diff.items():
+        type_content = descrip.get('type')
         value = descrip.get('value')
         name = f'{parent}{name}'
-        if type in types:
-            lines.append((name, differents(value, type)))
-        elif type == 'unchanged':
+        if type_content in TYPES:
+            lines.append((name, differents(value, type_content)))
+        elif type_content == 'unchanged':
             continue
-        elif type == 'nested':
+        elif type_content == 'nested':
             lines.extend((properties(value, name + '.')))
     return lines
 
 
-def format(dif):
+def format(diff):
     '''
     Format the given difference and return
-    a string representation of its properties.'''
-    property = properties(dif)
+    a string representation of its properties.
+    '''
+    property_data = properties(diff)
     result = []
-    for name, feature in property:
+    for name, feature in property_data:
         result.append(f"Property '{name}' was {feature}")
     return '\n'.join(result)
