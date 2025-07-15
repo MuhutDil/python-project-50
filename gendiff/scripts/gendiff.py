@@ -10,7 +10,8 @@ def main():
     from the command line interface, generates the difference
     between the files, and prints the difference.
     '''
-    diff = generate_diff(cli())
+    first_file, second_file, format = cli()
+    diff = generate_diff(first_file, second_file, format)
     print(diff)
 
 
