@@ -11,7 +11,7 @@ FORMATS = {
 }
 
 
-def generate_diff(file1, file2, selected_format):
+def generate_diff(file1, file2, selected_format='stylish'):
     '''
     Generate the difference between two files and return
     the result in the specified format.
