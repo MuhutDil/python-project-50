@@ -5,11 +5,11 @@ def convert_value(value):
     scecific_values = {False: 'false', True: 'true', None: 'null'}
     if isinstance(value, dict):
         return '[complex value]'
-    elif value in scecific_values:
-        return scecific_values[value]
     elif isinstance(value, str):
         return f"'{value}'"
-    return value
+    elif isinstance(value, int) and not isinstance(value, bool):
+        return value
+    return scecific_values[value]
 
 
 def describe_change(value, change_type):
