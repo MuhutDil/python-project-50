@@ -1,8 +1,8 @@
 import json
 
 
-def format(dif):
+def format(data):
     '''
     Formatted input as a JSON string
     '''
-    return json.dumps(dif)
+    return json.dumps(data)

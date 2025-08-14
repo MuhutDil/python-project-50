@@ -17,9 +17,9 @@ def add_prefix(content, depth, symb=''):
     return f"{depth_indent}{symb}{content}"
 
 
-def to_original_value(value):
+def convert_value(value):
     '''
-    Rename bool value to their original representation.
+    Convert bool value to their original representation.
     '''
     if isinstance(value, (int, str)) and not isinstance(value, bool):
         return value
@@ -39,7 +39,7 @@ def format(data, depth=0):
         A string representation of the formatted nested dictionary.
     '''
     if not isinstance(data, dict):
-        return f'{to_original_value(data)}'
+        return f'{convert_value(data)}'
     current_indent = INDENT * 4 * depth
     current_depth = depth + 1
     lines = []

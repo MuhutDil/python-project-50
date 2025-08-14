@@ -1,14 +1,5 @@
-from gendiff.formats import stylish
-from gendiff.formats import plain
-from gendiff.formats import json_format
+from gendiff.formats import apply_selected_format
 from gendiff.parser import parse_file
-
-
-FORMATS = {
-    'stylish': stylish,
-    'plain': plain,
-    'json': json_format,
-}
 
 
 def generate_diff(file1, file2, selected_format='stylish'):
@@ -23,20 +14,14 @@ def generate_diff(file1, file2, selected_format='stylish'):
 
     Returns:
         str: The difference between the two files in the specified format.
-
-    Raises:
-        ValueError: If an invalid format is provided.
     '''
     dict1 = parse_file(file1)
     dict2 = parse_file(file2)
-    diff = process_dictionary_content(dict1, dict2)
-    style_format = FORMATS.get(selected_format)
-    if style_format is None:
-        raise ValueError('Invalid format.')
-    return style_format(diff)
+    data = process_dictionaries_content(dict1, dict2)
+    return apply_selected_format(data, selected_format)
 
 
-def process_dictionary_content(dict1, dict2):
+def process_dictionaries_content(dict1, dict2):
     '''
     Sorts the content of two dictionaries and returns a dictionary
     representing the differences between the two.
@@ -60,7 +45,7 @@ def process_dictionary_content(dict1, dict2):
                 and isinstance(dict2_content, dict)):
                 result[content] = {
                     'type': 'nested',
-                    'value': process_dictionary_content(dict1_content,
+                    'value': process_dictionaries_content(dict1_content,
                                                         dict2_content)
                 }
 

@@ -1,34 +1,34 @@
-def rename_value(value):
+def convert_value(value):
     '''
-    Function to rename a value to a different representation.
+    Function to convert a value to a different representation.
     '''
+    scecific_values = {False: 'false', True: 'true', None: 'null'}
     if isinstance(value, dict):
         return '[complex value]'
-    elif isinstance(value, (int)) and not isinstance(value, bool):
-        return value
-    elif isinstance(value, (str)) and not isinstance(value, bool):
+    elif value in scecific_values:
+        return scecific_values[value]
+    elif isinstance(value, str):
         return f"'{value}'"
-    correct_view = {False: 'false', True: 'true', None: 'null'}
-    return correct_view[value]
+    return value
 
 
-def differents(value, type_content):
+def describe_change(value, change_type):
     '''
     Return a string based on the given type and value.
     '''
-    if type_content == 'added':
-        return f'added with value: {rename_value(value)}'
-    elif type_content == 'deleted':
+    if change_type == 'added':
+        return f'added with value: {convert_value(value)}'
+    elif change_type == 'deleted':
         return 'removed'
-    elif type_content == 'changed':
+    elif change_type == 'changed':
         old_value = value.get('old_value')
         new_value = value.get('new_value')
-        return (f'updated. From {rename_value(old_value)}'
-                + f' to {rename_value(new_value)}')
+        return (f'updated. From {convert_value(old_value)}'
+                + f' to {convert_value(new_value)}')
     raise ValueError('Invalid type.')
 
 
-def properties(diff, parent=''):
+def generate_diff_report(data, parent=''):
     '''
     Generate a list of properties and their differences.
 
@@ -42,26 +42,26 @@ def properties(diff, parent=''):
     '''
     TYPES = ('added', 'deleted', 'changed')
     lines = []
-    for name, descrip in diff.items():
+    for name, descrip in data.items():
         type_content = descrip.get('type')
         value = descrip.get('value')
         name = f'{parent}{name}'
         if type_content in TYPES:
-            lines.append((name, differents(value, type_content)))
+            lines.append((name, describe_change(value, type_content)))
         elif type_content == 'unchanged':
             continue
         elif type_content == 'nested':
-            lines.extend((properties(value, name + '.')))
+            lines.extend((generate_diff_report(value, name + '.')))
     return lines
 
 
-def format(diff):
+def format(data):
     '''
     Format the given difference and return
     a string representation of its properties.
     '''
-    property_data = properties(diff)
-    result = []
-    for name, feature in property_data:
-        result.append(f"Property '{name}' was {feature}")
-    return '\n'.join(result)
+    diff = generate_diff_report(data)
+    return '\n'.join(
+        f"Property '{name}' was {feature}"
+        for name, feature in diff
+    )

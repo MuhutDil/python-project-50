@@ -3,23 +3,24 @@ import os
 from gendiff import generate_diff
 
 
-path_fixtures = os.path.join('tests', 'fixtures')
+def build_full_path(file_name):
+    return os.path.join('tests', 'fixtures', file_name)
 
 
-def read_file(path):
-    with open(os.path.join(path_fixtures, path)) as file:
+def read_file(file_name):
+    with open(build_full_path(file_name)) as file:
         output = file.read()
     return output
 
 
-json_flat1 = os.path.join(path_fixtures, 'json_flat1.json')
-json_flat2 = os.path.join(path_fixtures, 'json_flat2.json')
-yaml_flat1 = os.path.join(path_fixtures, 'yaml_flat1.yml')
-yaml_flat2 = os.path.join(path_fixtures, 'yaml_flat2.yml')
-json_nested1 = os.path.join(path_fixtures, 'json_nested1.json')
-json_nested2 = os.path.join(path_fixtures, 'json_nested2.json')
-yaml_nested1 = os.path.join(path_fixtures, 'yaml_nested1.yml')
-yaml_nested2 = os.path.join(path_fixtures, 'yaml_nested2.yml')
+json_flat1 = build_full_path('json_flat1.json')
+json_flat2 = build_full_path('json_flat2.json')
+yaml_flat1 = build_full_path('yaml_flat1.yml')
+yaml_flat2 = build_full_path('yaml_flat2.yml')
+json_nested1 = build_full_path('json_nested1.json')
+json_nested2 = build_full_path('json_nested2.json')
+yaml_nested1 = build_full_path('yaml_nested1.yml')
+yaml_nested2 = build_full_path('yaml_nested2.yml')
 
 
 cases = [
