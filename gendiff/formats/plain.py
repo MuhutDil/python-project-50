@@ -1,4 +1,4 @@
-def convert_value(value):
+def to_str(value):
     '''
     Function to convert a value to a different representation.
     '''
@@ -17,20 +17,21 @@ def describe_change(value, change_type):
     Return a string based on the given type and value.
     '''
     if change_type == 'added':
-        return f'added with value: {convert_value(value)}'
+        return f'added with value: {to_str(value)}'
     elif change_type == 'deleted':
         return 'removed'
     elif change_type == 'changed':
         old_value = value.get('old_value')
         new_value = value.get('new_value')
-        return (f'updated. From {convert_value(old_value)}'
-                + f' to {convert_value(new_value)}')
+        return (f'updated. From {to_str(old_value)}'
+                + f' to {to_str(new_value)}')
     raise ValueError('Invalid type.')
 
 
-def generate_diff_report(data, parent=''):
+def format(data, parent=''):
     '''
-    Generate a list of properties and their differences.
+    Format the given difference and return a string
+    representation of its properties.
 
     Args:
         diff: A dictionary representing the input differences.
@@ -38,30 +39,22 @@ def generate_diff_report(data, parent=''):
                 (default is an empty string).
 
     Returns:
-        A list of tuples containing the property name and its differences.
+        A string representation of the formatted differences.
     '''
     TYPES = ('added', 'deleted', 'changed')
     lines = []
     for name, descrip in data.items():
         type_content = descrip.get('type')
         value = descrip.get('value')
-        name = f'{parent}{name}'
+        full_name = f'{parent}{name}'
         if type_content in TYPES:
-            lines.append((name, describe_change(value, type_content)))
+            lines.append(
+                f"Property '{full_name}' was "
+                f"{describe_change(value, type_content)}"
+            )
         elif type_content == 'unchanged':
             continue
         elif type_content == 'nested':
-            lines.extend((generate_diff_report(value, name + '.')))
-    return lines
-
-
-def format(data):
-    '''
-    Format the given difference and return
-    a string representation of its properties.
-    '''
-    diff = generate_diff_report(data)
-    return '\n'.join(
-        f"Property '{name}' was {feature}"
-        for name, feature in diff
-    )
+            nested_lines = format(value, f'{full_name}.')
+            lines.append(nested_lines)
+    return '\n'.join(lines)

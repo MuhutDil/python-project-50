@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from gendiff import cli, generate_diff
+from gendiff import generate_diff, parse_command
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     from the command line interface, generates the difference
     between the files, and prints the difference.
     '''
-    first_file, second_file, format = cli()
+    first_file, second_file, format = parse_command()
     diff = generate_diff(first_file, second_file, format)
     print(diff)
 

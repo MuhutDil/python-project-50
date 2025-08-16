@@ -1,7 +1,7 @@
 import argparse
 
 
-def cli():
+def parse_command():
     '''
     Collects and parses command line arguments for file comparison.
 

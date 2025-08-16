@@ -8,6 +8,15 @@ TYPES = {'added': "+ ",
         }
 
 
+def to_str(value):
+    '''
+    Convert bool value to their original representation.
+    '''
+    if isinstance(value, (int, str)) and not isinstance(value, bool):
+        return value
+    return {False: 'false', True: 'true', None: 'null'}[value]
+
+
 def add_prefix(content, depth, symb=''):
     '''
     Adds a prefix to the given content string
@@ -15,15 +24,6 @@ def add_prefix(content, depth, symb=''):
     '''
     depth_indent = INDENT * (depth * 4 - len(symb))
     return f"{depth_indent}{symb}{content}"
-
-
-def convert_value(value):
-    '''
-    Convert bool value to their original representation.
-    '''
-    if isinstance(value, (int, str)) and not isinstance(value, bool):
-        return value
-    return {False: 'false', True: 'true', None: 'null'}[value]
 
 
 def format(data, depth=0):
@@ -39,7 +39,7 @@ def format(data, depth=0):
         A string representation of the formatted nested dictionary.
     '''
     if not isinstance(data, dict):
-        return f'{convert_value(data)}'
+        return f'{to_str(data)}'
     current_indent = INDENT * 4 * depth
     current_depth = depth + 1
     lines = []
