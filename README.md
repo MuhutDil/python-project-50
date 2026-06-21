@@ -18,10 +18,10 @@ Output formats:
 - Uv version 0.5 or higher (optional)
 
 ### Download
-    uv tool install https://github.com/MuhutDil/python-project-50.git
+    uv tool install https://github.com/MuhutDil/Gendiff.git
 or
 
-    git clone https://github.com/MuhutDil/python-project-50.git
+    git clone https://github.com/MuhutDil/Gendiff.git
  
 #### Start commands
 ```gendiff [-h] [-f FORMAT] <first_file> <second_file>```
